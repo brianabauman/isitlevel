@@ -55,6 +55,13 @@ body {
     linear-gradient(180deg, #171210 0%, #100c0a 100%);
 }
 
+/* iOS Safari: 100%/inset:0 can extend behind the dynamic toolbars; dvh tracks
+   the visible viewport so the playbar is never hidden under browser chrome. */
+@supports (height: 100dvh) {
+  html, body { height: 100dvh; }
+  #app { bottom: auto; height: 100dvh; }
+}
+
 /* ------------------------------------------------------------- screens */
 
 .screen {
@@ -1030,6 +1037,26 @@ body {
   .name-input { width: 100%; }
   .stats { grid-template-columns: 1fr; }
   .instruction { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+/* Phones: shrink every fixed-height row around the stage so the scene keeps
+   the vertical space; without this the room bottoms out past the stage frame. */
+@media (max-width: 640px), (max-height: 620px) {
+  .screen { padding: 10px 10px calc(10px + env(safe-area-inset-bottom, 0px)); }
+  .hud { padding: 6px 8px; gap: 8px; border-radius: 12px; }
+  .hud__player { padding: 4px 10px; }
+  .instruction { margin-top: 8px; padding: 8px 12px; }
+  .instruction__title { font-size: 16px; }
+  .instruction__body { font-size: 12.5px; }
+  .stage-wrap { padding: 8px 0; }
+  .stage-frame { min-height: min(200px, 100%); border-radius: 12px; }
+  .playbar { gap: 8px 12px; }
+  .playbar .btn--large { padding: 11px 24px; font-size: 15px; }
+  .playbar__hint { font-size: 11px; }
+  .speedclock { padding: 7px 12px; gap: 10px; border-radius: 12px; }
+  .speedclock__time { font-size: 17px; min-width: 54px; }
+  .speedclock__track { height: 10px; }
+  .speedclock__rate { font-size: 15px; min-width: 100px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
